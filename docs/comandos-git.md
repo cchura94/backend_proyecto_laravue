@@ -29,4 +29,15 @@ git remote add origin direccion_remota
 # ejemplo
 git remote add origin https://github.com/cchura94/backend_proyecto_laravue.git
 ```
+### verificamos 
+```
+git remote 
+git remote -v
+```
+## Para Subir los cambios al repositorio remote
+```
+git add .
+git commit -m "Proyecto Base y migracion personas (1:1)"
+git push origin master
+```
 
