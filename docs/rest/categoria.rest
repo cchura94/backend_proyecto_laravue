@@ -1,0 +1,28 @@
+GET http://localhost:8000/api/categoria
+
+### guardar
+
+POST http://127.0.0.1:8000/api/categoria
+Accept: application/json
+Content-Type: application/json
+
+{
+    "nombre": "BCA",
+    "detalle": "a"
+}
+
+### mostrar
+GET http://localhost:8000/api/categoria/5
+
+### modificar
+PUT http://localhost:8000/api/categoria/4
+Accept: application/json
+Content-Type: application/json
+
+{
+    "nombre": "JUGEUETES PARA NIÑOS",
+    "detalle": "JUEGUES de plastico"
+}
+
+### eliminar
+DELETE http://localhost:8000/api/categoria/9
