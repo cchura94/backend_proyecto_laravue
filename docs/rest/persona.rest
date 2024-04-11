@@ -6,9 +6,9 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "nombres": "Juan Prueba",
+    "nombres": "Pedro Prueba Parédez",
     "apellidos": "paredez",
     "direccion": "Av 6 de Agosto Z. abc",
     "estado": 1,
-    "user_id": 2
+    "user_id": 4
 }

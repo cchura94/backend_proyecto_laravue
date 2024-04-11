@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class CategoriaController extends Controller
 {
@@ -18,9 +19,18 @@ class CategoriaController extends Controller
     public function funGuardar(Request $request)
     {
         // validar
-        $request->validate([
+
+        // $request->validate([
+        //     "nombre" => "required|unique:categorias|min:3|max:30"
+        // ]);
+
+        $validator = Validator::make($request->all(), [
             "nombre" => "required|unique:categorias|min:3|max:30"
-        ]);
+        ], ["nombre.min" => "El nombre de la categoria debe ser minimo 3 carcteres"]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
         // guardar
         DB::insert("insert into categorias (nombre, detalle) values (?,?)", [$request->nombre, $request->detalle]);
         // responder

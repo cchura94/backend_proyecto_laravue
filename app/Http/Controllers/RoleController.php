@@ -30,6 +30,10 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            "nombre" => "required|unique:roles"
+        ]);
+
         DB::table("roles")->insert(["nombre" => $request->nombre]);
         return response()->json(["mensaje" => "Rol Creado"], 201);
     }
@@ -39,7 +43,13 @@ class RoleController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // $role = DB::table("roles")->find($id);
+        $role = DB::table("roles")->where('id','=',$id)->first();
+        if($role){
+            return response()->json($role, 200);
+        }
+        return response()->json(["message" => "el role buscado no existe"], 404);
+
     }
 
     /**
@@ -47,7 +57,7 @@ class RoleController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        
     }
 
     /**
@@ -55,7 +65,17 @@ class RoleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $role = DB::table("roles")->find($id);
+        if($role){
+
+            DB::table("roles")
+                ->where('id', $id)
+                ->update(["nombre" => $request->nombre]);
+        
+            return response()->json(["message" => "el role ha sido actualizado"], 200);
+        }
+          return response()->json(["message" => "el role buscado no existe"], 404);
+
     }
 
     /**
@@ -63,6 +83,9 @@ class RoleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $role = DB::table("roles")->where('id', '=', $id)->delete();
+        
+        return response()->json(["message" => "el role ha sido eliminado"], 200);
+
     }
 }

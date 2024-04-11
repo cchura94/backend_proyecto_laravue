@@ -3,11 +3,10 @@ GET http://localhost:8000/api/categoria
 ### guardar
 
 POST http://127.0.0.1:8000/api/categoria
-Accept: application/json
 Content-Type: application/json
 
 {
-    "nombre": "BCA",
+    "nombre": "B",
     "detalle": "a"
 }
 
