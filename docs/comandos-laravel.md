@@ -24,4 +24,5 @@ php artisan make:controller CategoriaController
 php artisan make:controller RoleController -r
 php artisan make:controller PersonaController --api
 
+php artisan make:controller UserController --api
 ```

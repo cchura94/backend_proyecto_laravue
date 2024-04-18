@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -23,5 +24,7 @@ Route::delete('/categoria/{id}', [CategoriaController::class, "funEliminar"]);
 Route::apiResource("role", RoleController::class);
 // rutas personas
 Route::apiResource("persona", PersonaController::class);
+// rutas para usuarios
+Route::apiResource("usuario", UserController::class);
 
 
