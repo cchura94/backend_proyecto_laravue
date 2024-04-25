@@ -12,10 +12,10 @@ POST http://localhost:8000/api/v1/auth/register
 Content-Type: application/json
 
 {
-    "name": "pedro",
-    "email": "pedro@mail.com",
-    "password": "pedro54321",
-    "c_password": "pedro54321"
+    "name": "admin",
+    "email": "admin@mail.com",
+    "password": "admin54321",
+    "c_password": "admin54321"
 }
 
 ### Profile

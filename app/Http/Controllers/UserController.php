@@ -13,7 +13,7 @@ class UserController extends Controller
     public function index()
     {
         // select * from users
-        $usuarios = User::select('id', 'name', 'email')->get();
+        $usuarios = User::with('persona', 'roles')->select('id', 'name', 'email')->orderBy('id', 'desc')->get();
 
         return response()->json($usuarios, 200);
     }
@@ -32,6 +32,11 @@ class UserController extends Controller
         $usuario->password = bcrypt($request->password);
         $usuario->save();
 
+        $roles = $request->roles;
+        if(count($roles) > 0){
+            $usuario->roles()->sync($roles);
+        }
+
         return response()->json(["mensaje" => "Usuario registrado"], 201);
 
     }
@@ -49,7 +54,18 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $usuario = User::find($id);
+        $usuario->name = $request->name;
+        $usuario->email = $request->email;
+        $usuario->password = bcrypt($request->password);
+        $usuario->update();
+
+        $roles = $request->roles;
+        if(count($roles) > 0){
+            $usuario->roles()->sync($roles);
+        }
+
+        return response()->json(["mensaje" => "Usuario actualizado"], 201);
     }
 
     /**
