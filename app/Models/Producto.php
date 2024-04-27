@@ -10,6 +10,6 @@ class Producto extends Model
     use HasFactory;
 
     public function categoria(){
-        $this->belongsTo(Categoria::class);
+        return $this->belongsTo(Categoria::class);
     }
 }
