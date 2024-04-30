@@ -4,8 +4,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "email": "pedro@mail.com",
-    "password": "pedro54321"
+    "email": "admin@mail.com",
+    "password": "admin54321"
 }
 ### Register
 POST http://localhost:8000/api/v1/auth/register

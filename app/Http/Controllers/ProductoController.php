@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ProductoExport;
 use App\Models\Producto;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductoController extends Controller
 {
@@ -75,5 +77,25 @@ class ProductoController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function actualizarImagen(string $id, Request $request){
+        if($file = $request->file("imagen")){
+            $url_imagen = time()."-".$file->getClientOriginalName();
+            $file->move("imagenes/", $url_imagen);
+            
+            $direccion_image = "imagenes/". $url_imagen;
+
+            $producto = Producto::find($id);
+            $producto->imagen = $direccion_image;
+            $producto->update();
+            
+            return response()->json(["mensaje" => "Imagen Actualizada"], 201);
+        }
+        return response()->json(["mensaje" => "Se requiere Imagen para actualizar"], 422);
+    }
+
+    public function exportarExcel(){
+        return Excel::download(new ProductoExport, 'productos.xlsx');
     }
 }

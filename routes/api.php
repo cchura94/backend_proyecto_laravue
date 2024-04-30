@@ -29,9 +29,14 @@ Route::prefix('/v1/auth')->group(function(){
 
 // rutas categorias con SQL
 
+// exportar ecxcel
+Route::get("/producto/excel", [ProductoController::class, "exportarExcel"]);
 
 
 Route::middleware('auth:sanctum')->group(function(){
+
+    // actualizar imagen
+    Route::post('/producto/{id}/actualizar-image', [ProductoController::class, "actualizarImagen"]);
     
     Route::get('/categoria/reporte-pdf', [CategoriaController::class, "funReportePDF"]);
     Route::get('/categoria', [CategoriaController::class, "funListar"]);

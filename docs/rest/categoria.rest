@@ -4,10 +4,11 @@ GET http://localhost:8000/api/categoria
 
 POST http://127.0.0.1:8000/api/categoria
 Content-Type: application/json
+Authorization: Bearer 14|vJ0hvphzopfymyPnYVe9sIy33HLiAyvdi9K3hPILea784f27
 
 {
-    "nombre": "B",
-    "detalle": "a"
+    "nombre": "ELECTRONICOS",
+    "detalle": "equipos de computación"
 }
 
 ### mostrar
