@@ -35,6 +35,11 @@ Route::get("/producto/excel", [ProductoController::class, "exportarExcel"]);
 
 Route::middleware('auth:sanctum')->group(function(){
 
+    // registrar producto con imagen
+    
+    Route::post('/producto-con-imagen', [ProductoController::class, "guardarProductoConImagen"]);
+
+
     // actualizar imagen
     Route::post('/producto/{id}/actualizar-image', [ProductoController::class, "actualizarImagen"]);
     
