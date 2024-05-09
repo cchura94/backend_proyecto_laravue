@@ -4,6 +4,8 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\RoleController;
@@ -58,4 +60,9 @@ Route::middleware('auth:sanctum')->group(function(){
     
     // rutas para productos
     Route::apiResource("producto", ProductoController::class);
+
+    // rutas para pedido
+    Route::apiResource("pedido", PedidoController::class);
+    // rutas para cliente
+    Route::apiResource("cliente", ClienteController::class);
 });
