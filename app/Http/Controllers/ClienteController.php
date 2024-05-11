@@ -7,6 +7,20 @@ use Illuminate\Http\Request;
 
 class ClienteController extends Controller
 {
+
+    public function buscarCliente(Request $request){
+        $buscar = $request->buscar;
+
+        if(isset($buscar)){
+            $cliente = Cliente::where('razon_social', "like", "%$buscar%")
+                                ->orWhere('ci_nit', "like", "%$buscar%")
+                                ->orWhere('correo', "like", "%$buscar%")
+                                ->first();
+            
+            return response()->json($cliente);
+
+        }
+    }
     /**
      * Display a listing of the resource.
      */

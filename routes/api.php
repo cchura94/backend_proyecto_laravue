@@ -15,11 +15,15 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+Route::post("/reset-password", [AuthController::class, "funResetPassword"]);
 // Auth 
 Route::prefix('/v1/auth')->group(function(){
     
     Route::post("/login", [AuthController::class, "funLogin"]);
     Route::post("/register", [AuthController::class, "funRegister"]);
+
+    // resetPassword
+    Route::post("/cambio-password", [AuthController::class, "funCambioPassword"]);
 
     Route::middleware('auth:sanctum')->group(function(){
         
@@ -31,12 +35,15 @@ Route::prefix('/v1/auth')->group(function(){
 
 // rutas categorias con SQL
 
+
 // exportar ecxcel
 Route::get("/producto/excel", [ProductoController::class, "exportarExcel"]);
 
 
 Route::middleware('auth:sanctum')->group(function(){
-
+    
+    // buscar cliente
+    Route::get('/cliente/buscar', [ClienteController::class, "buscarCliente"]);
     // registrar producto con imagen
     
     Route::post('/producto-con-imagen', [ProductoController::class, "guardarProductoConImagen"]);

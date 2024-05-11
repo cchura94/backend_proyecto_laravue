@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pedido;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PedidoController extends Controller
 {
@@ -12,7 +13,7 @@ class PedidoController extends Controller
      */
     public function index()
     {
-        $pedidos = Pedido::orderBy('id', 'desc')->paginate(10);
+        $pedidos = Pedido::orderBy('id', 'desc')->with('cliente', 'user', 'productos')->paginate(10);
 
         return response()->json($pedidos);
     }
@@ -32,6 +33,7 @@ class PedidoController extends Controller
         // fecha pedido
         $pedido->fecha_pedido = date('Y-m-d H:i:s');
         $pedido->cliente_id = $request->cliente_id;
+        $pedido->user_id = Auth::id();
         $pedido->save();
 
         // asignar productos al pedido

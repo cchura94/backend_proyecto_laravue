@@ -6,7 +6,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
+use App\Notifications\ResetPasswordNotification;
 
 class AuthController extends Controller
 {
@@ -54,6 +56,7 @@ class AuthController extends Controller
     public function funPerfil(){
 
         $user = Auth::user();
+        $user->persona;
         return response()->json($user, 200);
 
     }
@@ -61,6 +64,22 @@ class AuthController extends Controller
         $request->user()->tokens()->delete();
 
         return response()->json(["message" => "Logout"], 200);
-    }    
+    }
+    
+    public function funResetPassword(Request $request){
+        $request->validate([
+            "email" => "required|email"
+        ]);
+
+        $status = Password::sendResetLink($request->only('email'));
+
+        if($status == Password::RESET_LINK_SENT){
+            return ["status" => __($status)];
+        }
+    }
+
+    public function funCambioPassword(){
+        
+    }      
     
 }
