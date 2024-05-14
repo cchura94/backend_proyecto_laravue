@@ -10,20 +10,21 @@ use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
 Route::post("/reset-password", [AuthController::class, "funResetPassword"]);
+// resetPassword
+Route::post("/cambio-password", [AuthController::class, "funCambioPassword"]);
 // Auth 
 Route::prefix('/v1/auth')->group(function(){
     
     Route::post("/login", [AuthController::class, "funLogin"]);
     Route::post("/register", [AuthController::class, "funRegister"]);
 
-    // resetPassword
-    Route::post("/cambio-password", [AuthController::class, "funCambioPassword"]);
 
     Route::middleware('auth:sanctum')->group(function(){
         
@@ -38,6 +39,8 @@ Route::prefix('/v1/auth')->group(function(){
 
 // exportar ecxcel
 Route::get("/producto/excel", [ProductoController::class, "exportarExcel"]);
+
+Route::post("/user/excel/import", [UserController::class, "importarExcel"]);
 
 
 Route::middleware('auth:sanctum')->group(function(){
@@ -73,3 +76,16 @@ Route::middleware('auth:sanctum')->group(function(){
     // rutas para cliente
     Route::apiResource("cliente", ClienteController::class);
 });
+
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    // return $request;
+    $request->fulfill();
+    // asignar una fecha y hora de verificación al nuevo usuario
+ 
+    return response()->json(["Verificacion..."]);
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::get("/no-autorizado", function (){
+    return response()->json(["mensaje" => "Requiere de inicio de sesion"]);
+})->name('login');

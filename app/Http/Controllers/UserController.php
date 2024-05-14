@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\UserImport;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -36,6 +39,8 @@ class UserController extends Controller
         if(count($roles) > 0){
             $usuario->roles()->sync($roles);
         }
+
+        event(new Registered($usuario));
 
         return response()->json(["mensaje" => "Usuario registrado"], 201);
 
@@ -75,4 +80,17 @@ class UserController extends Controller
     {
         //
     }
+
+    public function importarExcel(Request $request){
+
+        $request->validate([
+            "file" => "required|mimes:xlsx,xls"
+        ]);
+        $file = $request->file('file');
+
+        Excel::import(new UserImport, $file);
+
+        return response()->json(["message" => "Excel importado correctamente"]);
+    }
+    
 }

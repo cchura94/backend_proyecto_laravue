@@ -8,7 +8,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Password as RulesPassword;
 use App\Notifications\ResetPasswordNotification;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -78,7 +81,33 @@ class AuthController extends Controller
         }
     }
 
-    public function funCambioPassword(){
+    public function funCambioPassword(Request $request){
+
+        $request->validate([
+            "email" => "required|email",
+            "token" => "required",
+            "password" => ["required", "confirmed", RulesPassword::default()]
+        ]);
+
+        $status = Password::reset(
+            $request->only("email","password","password_confirmation", "token"),
+            function (User $user, string $password){
+                $user->forceFill([
+                    "password" =>Hash::make($password),
+                ])->setRememberToken(Str::random(60));
+
+                $user->save();
+
+                event(new PasswordReset($user));
+            }
+        );
+
+        if($status === Password::PASSWORD_RESET) {
+            return response(["message" => "La contraseña se ha modificado"]);
+        }
+
+        return response(["message" => __($status)], 500);
+
         
     }      
     
