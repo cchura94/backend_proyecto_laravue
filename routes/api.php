@@ -37,13 +37,15 @@ Route::prefix('/v1/auth')->group(function(){
 // rutas categorias con SQL
 
 
-// exportar ecxcel
-Route::get("/producto/excel", [ProductoController::class, "exportarExcel"]);
 
-Route::post("/user/excel/import", [UserController::class, "importarExcel"]);
 
 
 Route::middleware('auth:sanctum')->group(function(){
+    // exportar ecxcel
+    Route::get("/producto/excel", [ProductoController::class, "exportarExcel"]);
+    Route::post("/user/excel/import", [UserController::class, "importarExcel"]);
+    // pdf 
+    Route::get("/pedido/{id}/pdf-report", [PedidoController::class, "exportarPedidoPDF"]);
     
     // buscar cliente
     Route::get('/cliente/buscar', [ClienteController::class, "buscarCliente"]);

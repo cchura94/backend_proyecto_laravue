@@ -5,15 +5,30 @@ namespace App\Http\Controllers;
 use App\Models\Pedido;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PedidoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $pedidos = Pedido::orderBy('id', 'desc')->with('cliente', 'user', 'productos')->paginate(10);
+        if(isset($request->q)){
+            $buscar = $request->q;
+
+            $pedidos = Pedido::orderBy('id', 'desc')
+                                ->with('cliente', 'user', 'productos')
+                                ->whereHas('cliente', function($query) use ($buscar){
+                                    $query->where('razon_social', 'iLike', "%$buscar%");
+                                    $query->orWhere('ci_nit', 'iLike', "%$buscar%");
+                                })
+                                ->paginate(10);
+        }else{
+            $pedidos = Pedido::orderBy('id', 'desc')->with('cliente', 'user', 'productos')->paginate(10);
+            
+        }
+
 
         return response()->json($pedidos);
     }
@@ -51,6 +66,14 @@ class PedidoController extends Controller
 
         return response()->json(["message" => "Pedido registrado"], 201);
 
+    }
+
+    public function exportarPedidoPDF($id, Request $request){
+
+        $pedido = Pedido::with('cliente', 'user', 'productos')->find($id);
+
+        $pdf = Pdf::loadView('pdf.recibo', ["pedido" => $pedido]);
+        return $pdf->download('recibo.pdf');
     }
 
     /**
